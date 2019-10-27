@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .blood {
+            /*width: 1000px;*/
+            height: 50px;
+            background: red;
+            display: table-cell;
+            text-align: center;
+            vertical-align: middle
+        }
+
+        .gameover {
+            width: 300px;
+            height: 25px;
+            background-color: blue;
+            text-align: center;
+        }
+
+        #hit {
+            width: 100px;
+            height: 100px;
+            background-color: green;
+            position: absolute;
+            top: 500px;
+            left: 500px;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        var timer;
+        var random;
+        $(function () {
+            $('.blood').css('width', $(window).width());
+            console.log('你浏览器上次刷新时的宽度:' + $(window).width() + 'px(\n没错，你的屏幕大小决定了你的血量 ( (');
+
+            function time() {
+                timer = setInterval(function () {
+                    // var bcss = $('.blood').css('width');
+                    $('.blood').css("width", "-=2");
+                    if (parseInt($('.blood').css("width")) < 300) {
+                        clearInterval(timer);
+                        alert("你挂了.jpg")
+                        location.reload();
+                    }
+                }, 20);
+            }
+
+            function randomhit() {
+                random = setInterval(function () {
+                    var xp = ($(window).width() - 100) * Math.random();
+                    var yp = ($(window).height() - 100) * Math.random();
+                    console.log(xp);
+                    $('#hit').animate({
+                        left: xp
+                    }, 0)
+                    $('#hit').animate({
+                        top: yp
+                    }, 0)
+                }, 750);
+
+            }
+
+            randomhit();
+
+            time();
+            $('.button_stop').click(function () {
+                clearInterval(timer);
+            });
+            $('.button_continue').click(function () {
+                time();
+            });
+            $('.hit').click(function () {
+                $('.blood').css("width", "+=100")
+            });
+
+        })
+    </script>
+</head>
+<!--小草411 19.10.27-->
+<body>
+<div class="blood">这是你的血条</div>
+<div class="gameover">如果血量跑到这里，你就挂了</div>
+<button class="button_stop">ＳＴＯＰ</button>
+<button class="button_continue">Continue</button>
+<button class="hit">ＨＩＴ</button>
+<div class="hit" id="hit"></div>
+</body>
+</html>
