@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .keyboard {
+            width: 50%;
+            margin: auto auto 20px;
+            /*border: 1px solid black;*/
+        }
+
+        .textarea1 {
+            resize: none;
+            width: 100%;
+            height: 100px;
+        }
+
+        .send {
+            display: block;
+            width: 15%;
+            height: 30px;
+            margin-left: 85%;
+        }
+
+        .info {
+            margin: auto auto;
+            width: 50%;
+            padding: 10px 0px;
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+        }
+
+        .info:last-child {
+            border-bottom: 1px solid black;
+        }
+
+        .info > .infotext {
+            margin-bottom: 20px;
+        }
+
+        .info > .action {
+            overflow: hidden;
+        }
+
+        .info > .action > .time {
+            float: left
+        }
+
+        .info > .action > .sl {
+            float: right;
+        }
+
+        .chpage {
+            margin: auto auto;
+            width: 50%;
+            height: 50px;
+            background-color: #d5d5d5;
+            text-align: right;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .chpage > a {
+            text-decoration: none;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #838383;
+            line-height: 20px;
+            text-align: center;
+            color: black;
+        }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script>
+        $(function () {
+            $('.send').prop('disabled', true);
+            $('body').delegate('.textarea1', 'propertychange input', function () {
+                if ($(this).val().length > 0) {
+                    $('.send').prop('disabled', false);
+                } else {
+                    $('.send').prop('disabled', true);
+                }
+            });
+            $('.send').click(function () {
+                var $usertext1 = $('.textarea1').val();
+                var $nwb = creat($usertext1);
+                $('.keyboarded').prepend($nwb);
+                $('.textarea1').val('');
+            });
+
+            function creat(text) {
+                var $wb = $("<div class=\"info\">\n" +
+                    "        <p class=\"infotext\">" + text + "</p>\n" +
+                    "        <p class=\"action\">\n" +
+                    "            <span class=\"time\">" + thisDate() + "</span>\n" +
+                    "            <span class=\"sl\">\n" +
+                    "            顶<a href=\"javascript:;\" class='nb'>0</a>\n" +
+                    "            踩<a href=\"javascript:;\" class='sb'>0</a>\n" +
+                    "            <a href=\"javascript:;\" class='del'>删除</a>\n" +
+                    "        </span>\n" +
+                    "\n" +
+                    "        </p>\n" +
+                    "    </div>")
+                return $wb;
+            }
+
+            function thisDate() {
+                var date = new Date();
+                var wbTime = [date.getFullYear() + '年',
+                    date.getMonth() + 1 + '月',
+                    date.getDate() + '日 ',
+                    date.getHours() + ':',
+                    date.getMinutes() + ':',
+                    date.getSeconds()
+                ];
+                return wbTime.join('');
+            }
+
+            $('body').delegate('.nb', 'click', function () {
+                $(this).text(parseInt($(this).text()) + 1)
+            });
+            $('body').delegate('.sb', 'click', function () {
+                $(this).text(parseInt($(this).text()) + 1)
+            });
+            $('body').delegate('.del', 'click', function () {
+                $(this).parents('.info').remove();
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div class="keyboard">
+    <textarea class="textarea1"></textarea>
+    <input type="button" value="发布" class="send">
+</div>
+<div class="keyboarded">
+    <div class="info">
+        <p class="infotext">NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON </p>
+        <p class="action">
+            <span class="time">1145年1月4日</span>
+            <span class="sl">
+            顶<a href="javascript:;" class="nb">0</a>
+            踩<a href="javascript:;" class="sb">0</a>
+            <a href="javascript:;" class="del">删除</a>
+        </span>
+
+        </p>
+    </div>
+    <div class="info">
+        <p class="infotext">NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON </p>
+        <p class="action">
+            <span class="time">1145年1月4日</span>
+            <span class="sl">
+            顶<a href="javascript:;" class="nb">0</a>
+            踩<a href="javascript:;" class="sb">0</a>
+            <a href="javascript:;" class="del">删除</a>
+        </span>
+
+        </p>
+    </div>
+    <div class="info">
+        <p class="infotext">NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON </p>
+        <p class="action">
+            <span class="time">1145年1月4日</span>
+            <span class="sl">
+            顶<a href="javascript:;" class="nb">0</a>
+            踩<a href="javascript:;" class="sb">0</a>
+            <a href="javascript:;" class="del">删除</a>
+        </span>
+
+        </p>
+    </div>
+    <div class="info">
+        <p class="infotext">NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON NIKON </p>
+        <p class="action">
+            <span class="time">1145年1月4日</span>
+            <span class="sl">
+            顶<a href="javascript:;" class="nb">0</a>
+            踩<a href="javascript:;" class="sb">0</a>
+            <a href="javascript:;" class="del">删除</a>
+        </span>
+
+        </p>
+    </div>
+</div>
+<div class="chpage">
+    <a href="javascript:;">1</a>
+    <a href="javascript:;">2</a>
+    <a href="javascript:;">3</a>
+</div>
+</body>
+</html>
