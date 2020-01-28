@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+        }
+
+        #canvas {
+            /*border: 1px solid black;*/
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        #img1 {
+            display: none;
+        }
+
+        .input {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        #text1
+    </style>
+</head>
+<body id="body">
+<div class="input">
+    <button id="but1">改变粒子级别(建议0-10)</button>
+    <input type="text" id="text1" style="width: 50px">
+</div>
+<!--<BR>-->
+<!--<img src="我.jpg" height="640" width="640" id="img1">-->
+<canvas id="canvas"></canvas>
+
+<script>
+
+    let pN = 5;
+
+    let but1 = document.getElementById('but1');
+    let text = document.getElementById('text1');
+    but1.onclick = function () {
+        pN = text.value;
+    };
+
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let body = document.getElementById('body');
+    canvas.width = body.clientWidth;
+    canvas.height = body.clientHeight;
+
+    function randomPos() {
+        let cw = canvas.width;
+        let ch = canvas.height;
+        let px, py;
+        px = Math.random() * cw;
+        py = Math.random() * 100 - 100;
+        return [px, py];
+    }
+
+    function draw(px, py) {
+        ctx.beginPath();
+        ctx.arc(px, py, 2, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function Pos(px, py, speed) {
+        this.px = px;
+        this.py = py;
+        this.speed = speed;
+    }
+
+    let poss = [];
+
+    function setPos() {
+        for (let i = 0; i < pN; i++) {
+            let Pos1 = new Pos(randomPos()[0], randomPos()[1], Math.random() * 10);
+            poss.push(Pos1);
+        }
+    }
+
+    function move() {
+        setPos();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = poss.length - 1; i >= 0; i--) {
+            if (poss[i]['py'] < canvas.height) {
+                poss[i]['py'] += poss[i]['speed'];
+                draw(poss[i]['px'], poss[i]['py']);
+            }
+        }
+
+
+    }
+
+    function ac() {
+        move();
+        window.requestAnimationFrame(ac);
+    }
+
+    ac();
+    // let ac = setInterval(function () {
+    //     move();
+    // }, 5);
+
+
+</script>
+</body>
+</html>
