@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>屑粒子2</title>
+    <!--小草411-2021-10-7-->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #canvas {
+            /*border: 1px solid black;*/
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        #img1 {
+            display: none;
+        }
+
+        .input {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        #text1
+    </style>
+</head>
+<body id="body">
+<div class="input">
+    <button id="but1">改变粒子级别(当前5)</button>
+    <input type="text" id="speed" style="width: 50px" value="5">
+    <br>
+    <button id="but2">横向随机程度(当前3)</button>
+    <input type="text" id="xRandom" style="width: 50px" value="3">
+    <br>
+    <button id="but3">平均粒子大小(当前2)</button>
+    <input type="text" id="size" style="width: 50px" value="2">
+    <br>
+    <button id="but4">平均粒子速度(当前1)</button>
+    <input type="text" id="mainSpeed" style="width: 50px" value="1">
+</div>
+<!--<BR>-->
+<!--<img src="我.jpg" height="640" width="640" id="img1">-->
+<canvas id="canvas"></canvas>
+
+<script>
+
+    let pN = 10;//粒子生成速度
+    let pR = 3;//横向随机程度
+    let pS = 2;//平均粒子大小
+    let mainSpeed = 1//粒子速度
+    let mouseX = 0;//无需解释
+    let mouseY = 0;
+
+    function isInteger(obj) {
+        console.log(typeof obj === 'number');
+        return typeof obj === 'number';
+    }
+
+    function init() {
+        let but1 = document.getElementById('but1');
+        let text_Speed = document.getElementById('speed');
+        let but2 = document.getElementById('but2');
+        let text_xRandom = document.getElementById('xRandom');
+        let but3 = document.getElementById('but3');
+        let text_Size = document.getElementById('size');
+        let but4 = document.getElementById('but4');
+        let text_mainSpeed = document.getElementById('mainSpeed');
+
+        but1.onclick = function () {
+            pN = parseInt(text_Speed.value);
+            but1.innerHTML = "改变粒子级别(当前" + pN + ")"
+        };
+
+        but2.onclick = function () {
+            pR = parseInt(text_xRandom.value);
+            but2.innerHTML = "横向随机程度(当前" + pR + ")"
+        }
+
+        but3.onclick = function () {
+            pS = parseInt(text_Size.value);
+            but3.innerHTML = "平均粒子大小(当前" + pS + ")"
+        }
+
+        but4.onclick = function () {
+            mainSpeed = parseFloat(text_mainSpeed.value);
+            but4.innerHTML = "平均粒子大小(当前" + mainSpeed + ")"
+        }
+    }
+
+    init()
+
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    let body = document.getElementById('body');
+    canvas.width = body.clientWidth;
+    canvas.height = body.clientHeight;
+
+    function randomPos() {
+        let cw = canvas.width;
+        let ch = canvas.height;
+        let px, py;
+        px = Math.random() * cw;
+        py = Math.random() * 100 - 100;
+        return [px, py];
+    }
+
+    function draw(px, py, ps) {
+        ctx.beginPath();
+        ctx.arc(px, py, ps, 0, 2 * Math.PI);
+        ctx.fill();
+    }
+
+    function Pos(px, py, speed, xR, size) {
+        this.px = px;
+        this.py = py;
+        this.speed = speed;
+        this.xR = xR;
+        this.size = size;
+    }
+
+    let poss = [];
+
+    function setPos() {
+        for (let i = 0; i < pN; i++) {
+            let Pos1 = new Pos(randomPos()[0], randomPos()[1], Math.random() * 7 + 3, (Math.random() - 0.5) * pR, Math.random() * pS);
+            poss.push(Pos1);
+        }
+    }
+
+    function move() {
+        setPos();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = poss.length - 1; i >= 0; i--) {
+            if (poss[i]['py'] > canvas.height) {
+                poss.splice(i, 1)
+            }
+            if (poss[i]['py'] < canvas.height) {
+                poss[i]['py'] += (poss[i]['speed'] * mainSpeed);
+                poss[i]['px'] += poss[i]['xR']
+                draw(poss[i]['px'], poss[i]['py'], poss[i]['size']);
+            }
+            // if (Difference(poss[i]['px'], mouseX) < 50) {
+            //     console.log("cd");
+            // }
+        }
+
+
+    }
+
+    // 我点了！
+    canvas.addEventListener("mousemove", function (event) {
+        getMousePos(canvas, event);
+    });
+
+    function getMousePos(canvas, event) {
+        let pos = canvas.getBoundingClientRect();
+        let x = event.clientX - pos.left * (canvas.width / pos.width);
+        let y = event.clientY - pos.top * (canvas.height / pos.height);
+        console.log("mouseX:" + x + ",mouseY:" + y);
+        mouseX = x;
+        mouseY = y;
+
+        for (let i = poss.length - 1; i >= 0; i--) {
+            if (Difference(poss[i]['px'], mouseX) < 100 && Difference(poss[i]['py'], mouseY) < 100) {
+                console.log("cd");
+                poss.splice(i, 1)
+                draw(mouseX, mouseY, 100)
+            }
+        }
+
+    }
+
+    function Difference(a, b) {
+        return Math.abs(a - b);
+    }
+
+    function ac() {
+        move();
+        window.requestAnimationFrame(ac);
+    }
+
+    ac();
+
+    // let ac = setInterval(function () {
+    //     move();
+    // }, 5);
+
+
+</script>
+</body>
+</html>
