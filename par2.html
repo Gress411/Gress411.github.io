@@ -36,7 +36,7 @@
     <button id="but1">改变粒子级别(当前5)</button>
     <input type="text" id="speed" style="width: 50px" value="5">
     <br>
-    <button id="but2">横向随机程度(当前3)</button>
+    <button id="but2">横向随机程度(当前1)</button>
     <input type="text" id="xRandom" style="width: 50px" value="3">
     <br>
     <button id="but3">平均粒子大小(当前2)</button>
@@ -52,7 +52,7 @@
 <script>
 
     let pN = 10;//粒子生成速度
-    let pR = 3;//横向随机程度
+    let pR = 1;//横向随机程度
     let pS = 2;//平均粒子大小
     let mainSpeed = 1//粒子速度
     let mouseX = 0;//无需解释
@@ -90,7 +90,7 @@
 
         but4.onclick = function () {
             mainSpeed = parseFloat(text_mainSpeed.value);
-            but4.innerHTML = "平均粒子大小(当前" + mainSpeed + ")"
+            but4.innerHTML = "平均粒子速度(当前" + mainSpeed + ")"
         }
     }
 
